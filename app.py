@@ -4,6 +4,8 @@ import pandas as pd
 
 from sklearn.preprocessing import StandardScaler
 from src.pipeline.predict_pipeline import CustomData,PredictPipeline
+import sys
+from src.exception import CustomException
 
 application=Flask(__name__)
 
@@ -36,8 +38,13 @@ def predict_datapoint():
 
         predict_pipeline=PredictPipeline()
         print("Mid Prediction")
-        results=predict_pipeline.predict(pred_df)
-        print("after Prediction")
+        try:
+            results=predict_pipeline.predict(pred_df)
+            print("after Prediction")
+            print(results)
+        except Exception as e:
+            raise CustomException(e, sys)
+        
         return render_template('home.html',results=results[0])
     
 
